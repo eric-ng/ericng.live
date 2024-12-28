@@ -7,10 +7,10 @@ const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
+  parser: "@typescript-eslint/parser",
 });
 
 const eslintConfig = [
-  {"parser": "@typescript-eslint/parser"},
   ...compat.extends("next/core-web-vitals"),
 ];
 
