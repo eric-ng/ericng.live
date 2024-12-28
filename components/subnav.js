@@ -2,23 +2,23 @@
 
 import { usePathname } from "next/navigation";
 
-export default function Nav({children}) {
+export default function SubNav({children}) {
     const pathname = usePathname();
     return (
-        <nav className="flex gap-4 shadow">
-            <div className="nav-item m-4">
+        <div className="flex gap-4 bg-slate-200 shadow">
+            <div className="nav-item m-2 ml-4 mr-4">
                 <a href="/">
-                    Home
+                    Creatives
                 </a>
             </div>
-            <div className="nav-item m-4">
+            <div className="nav-item m-2 ml-4 mr-4">
                 <a href="/porfo">
-                    Media
+                    Photos
                 </a>
             </div>
             <div className="flex-grow-1">
 
             </div>
-        </nav>
+        </div>
     );
 }
