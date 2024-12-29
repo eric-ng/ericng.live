@@ -34,9 +34,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="grid grid-cols-1">
+        <div className="flex flex-col h-screen overflow-hidden">
           <Nav navs={navs}/>
-          <main>
+          <main className="grow">
             {children}
           </main>
         </div>
