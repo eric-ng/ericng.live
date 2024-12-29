@@ -17,6 +17,17 @@ export const metadata = {
   description: "Live - Eng",
 };
 
+const navs = [
+  {
+    link: '/',
+    name: 'Home',
+  },
+  {
+    link: '/porfo',
+    name: 'Media',
+  },
+];
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -24,7 +35,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="grid grid-cols-1">
-          <Nav />
+          <Nav navs={navs}/>
           <main>
             {children}
           </main>
