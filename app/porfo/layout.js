@@ -1,21 +1,35 @@
+'use client';
+
 import SubNav from "@/components/subnav";
+
+const scrollOpts = {
+    behavior: "smooth",
+    block: "start",
+    inline: "nearest",
+};
 
 const navs = [
     {
-        link: '/porfo/creatives',
+        handler: () => {
+            document.getElementById(`creatives`).scrollIntoView(scrollOpts);
+            return false;
+        },
         name: 'Creatives',
     },
     {
-        link: '/porfo/photos',
+        handler: () => {
+            document.getElementById(`photos`).scrollIntoView(scrollOpts);
+            return false;
+        },
         name: 'Photos',
     },
 ];
 
 export default function PorfoLayout({children}) {
     return (
-        <div>
+        <div className="grid h-screen">
             <SubNav navs={navs}/>
-            <div>
+            <div className="grid max-h-full">
                 {children}
             </div>
         </div>

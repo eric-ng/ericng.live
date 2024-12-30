@@ -24,7 +24,7 @@ const navs = [
   },
   {
     link: '/porfo',
-    name: 'Media',
+    name: 'Showcase',
   },
 ];
 
