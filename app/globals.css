@@ -24,6 +24,17 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.loader-bg {
+  animation: 2s ease-in 400ms infinite alternate bg-morph;
+}
+@keyframes bg-morph {
+  from {
+    filter: brightness(0);
+  }
+  from {
+    filter: brightness(4);
+  }
+}
 .loader-dot {
   animation: 500ms ease-in 100ms infinite alternate dot-down;
 }

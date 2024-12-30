@@ -8,9 +8,9 @@ export default function Home() {
   const router = useRouter();
   setTimeout(() => {
     router.push('/porfo');
-  }, 1500);
+  }, 3500);
   return (
-    <div className="absolute w-screen h-screen top-0 left-0 bg-slate-950 z-20">
+    <div className="absolute w-screen h-screen top-0 left-0 bg-slate-950 z-20 loader-bg">
       <div className="grid grid-cols-9 h-screen items-center justify-items-center text-gray-200">
         <CircleOutlinedIcon className="loader-dot col-start-4"/>
         <CircleOutlinedIcon className="loader-dot col-start-5" style={{animationDelay: '300ms'}}/>

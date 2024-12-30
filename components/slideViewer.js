@@ -1,4 +1,6 @@
-import { useState } from 'react';
+'use client';
+
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
@@ -15,14 +17,23 @@ export default function SlideViewer({id, artifacts = []}) {
     const [cur, setCur] = useState(0);
     const [open, setOpen] = useState(false);
     const [clses, setClses] = useState('full');
+    const listener = () => {
+        document.getElementById(`${PREFIX}-${cur}`).scrollIntoView();
+    };
+    useEffect(() => {
+        window.addEventListener('resize', listener);
+        return () => {
+            window.removeEventListener('resize', listener);
+        };
+    });
     const prevHandler = () => {
         const tmpCur =  cur == 0 ? artifacts.length - 1 : cur - 1;
-        document.getElementById(`${id}-slideviewer-${tmpCur}`).scrollIntoView(scrollOpts);
+        document.getElementById(`${PREFIX}-${tmpCur}`).scrollIntoView(scrollOpts);
         setCur(tmpCur);
     }
     const nextHandler = () => {
         const tmpCur =  cur == artifacts.length - 1 ? 0 : cur + 1;
-        document.getElementById(`${id}-slideviewer-${tmpCur}`).scrollIntoView(scrollOpts);
+        document.getElementById(`${PREFIX}-${tmpCur}`).scrollIntoView(scrollOpts);
         setCur(tmpCur);
     }
     const openHandler = () => {
@@ -43,8 +54,8 @@ export default function SlideViewer({id, artifacts = []}) {
                         artifacts.map((artifact, ind) => (
                             <div 
                                 className={`relative bg-slate-800 flex place-content-center h-screen w-screen cursor-pointer pt-24 porfo-thumbs ${ind==cur ? '' : 'brightness-50'} ${open ? 'brightness-[.30]' : ''}`} 
-                                id={`${id}-slideviewer-${ind}`} 
-                                key={`${id}-slideviewer-${ind}`}
+                                id={`${PREFIX}-${ind}`} 
+                                key={`${PREFIX}-${ind}`}
                                 onClick={openHandler}
                             >
                                 <div className="desc font-mono font-[1000] text-[400px] leading-[250px] -tracking-[0.2em] text-slate-500 opacity-50 text-wrap break-all max-w-full max-h-full mt-24 absolute top-1/2 left-1/2 z-40">
