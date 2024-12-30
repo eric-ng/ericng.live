@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import SubNav from "@/components/subnav";
 
 const scrollOpts = {
@@ -26,6 +27,13 @@ const navs = [
 ];
 
 export default function PorfoLayout({children}) {
+    const listener = () => {
+        document.getElementById(`creatives`).scrollIntoView(scrollOpts);
+    };
+    useEffect(() => {
+        window.addEventListener('resize', listener);
+        return window.removeEventListener('resize', listener);
+    });
     return (
         <div className="grid h-screen">
             <SubNav navs={navs}/>
