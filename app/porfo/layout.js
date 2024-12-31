@@ -8,34 +8,54 @@ const scrollOpts = {
     inline: "nearest",
 };
 
-const navs = [
-    {
-        id: '/porfo/creatives',
-        handler: () => {
-            document.getElementById(`creatives`).scrollIntoView(scrollOpts);
-            return false;
+export default function PorfoLayout({children, creatives, photos, nanoapps}) {
+    const navs = [
+        {
+            link: '/porfo/creatives',
+            id: '/porfo/creatives',
+            handler: () => {
+                setTimeout(() => {
+                    document.getElementById('creatives').scrollIntoView(scrollOpts);
+                }, 300);
+                return false;
+            },
+            name: 'Creatives',
         },
-        name: 'Creatives',
-    },
-    {
-        id: '/porfo/photos',
-        handler: () => {
-            document.getElementById(`photos`).scrollIntoView(scrollOpts);
-            return false;
+        {
+            link: '/porfo/photos',
+            id: '/porfo/photos',
+            handler: () => {
+                setTimeout(() => {
+                    document.getElementById('photos').scrollIntoView(scrollOpts);
+                }, 300);
+                return false;
+            },
+            name: 'Photos',
         },
-        name: 'Photos',
-    },
-];
+        {
+            id: '/porfo/nanoapps',
+            link: '/porfo/nanoapps',
+            handler: () => {
+                setTimeout(() => {
+                    document.getElementById('nanoapps').scrollIntoView(scrollOpts);
+                }, 300);
+                return false;
+            },
+            name: 'NanoApps',
+        },
+    ];
 
-export default function PorfoLayout({children, creatives, photos}) {
     return (
         <div className="grid h-screen">
             <SubNav navs={navs}/>
             <div className="grid max-h-full">
                 {children}
+                <div className="grid h-screen font-[family-name:var(--font-geist-sans)]">
+                    {creatives}
+                    {photos}
+                    {nanoapps}
+                </div>
             </div>
-            {creatives}
-            {photos}
         </div>
     );
 }

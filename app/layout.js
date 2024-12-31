@@ -26,6 +26,10 @@ const navs = [
     link: '/porfo',
     name: 'Showcase',
   },
+  {
+    link: '/about',
+    name: 'About',
+  },
 ];
 
 export default function RootLayout({ children }) {

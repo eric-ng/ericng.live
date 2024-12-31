@@ -46,6 +46,7 @@ export default function SlideViewer({id, artifacts = []}) {
         setClses('full');
         setOpen(false);
     }
+    
     return (
         <div id={id} className="w-screen h-screen relative">
             <div className="h-screen w-screen overflow-hidden">
