@@ -6,9 +6,8 @@ const massageVal = (key, val) => {
 }
 
 export default async function AppsContent() {
-    // const res = await fetch(`${process.env.SERVER}/api/gs`);
-    // const data = (await res.json()).data;
-    const data = {values:[]}
+    const res = await fetch(`${process.env.SERVER}/api/gs`);
+    const data = (await res.json()).data;
 
     const keys = data.values[0];
     const rows = data.values.filter((val, ind) => ind > 0);
