@@ -47,8 +47,12 @@ export default function PorfoLayout({children, creatives, photos, nanoapps}) {
         },
     ];
     useEffect(() => {
-        setTimeout(() => {
-            document.getElementById(curMedia).scrollIntoView(scrollOpts);
+        const intev = setInterval(() => {
+            const ele = document.getElementById(curMedia)
+            if (ele) {
+                ele.scrollIntoView(scrollOpts);
+                clearInterval(intev);
+            }
         }, 300);
     }, [scroll]);
 
