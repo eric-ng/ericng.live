@@ -54,18 +54,21 @@ export default function SlideViewer({id, artifacts = []}) {
                     {
                         artifacts.map((artifact, ind) => (
                             <div 
-                                className={`relative bg-slate-800 flex place-content-center h-screen w-screen cursor-pointer pt-24 porfo-thumbs ${ind==cur ? '' : 'brightness-50'} ${open ? 'brightness-[.30]' : ''}`} 
+                                className={`relative bg-slate-800 flex place-content-center h-screen w-screen pt-24 porfo-thumbs ${ind==cur ? '' : 'brightness-50'} ${open ? 'brightness-[.30]' : ''}`} 
                                 id={`${PREFIX}-${ind}`} 
                                 key={`${PREFIX}-${ind}`}
-                                onClick={openHandler}
                             >
-                                <div className="overflow-hidden desc font-mono font-[1000] text-[400px] leading-[250px] -tracking-[0.2em] text-slate-500 opacity-50 text-wrap break-all max-w-full max-h-full pt-36 absolute top-1/2 left-1/2 z-40">
+                                <div
+                                    className="overflow-hidden cursor-pointer desc font-mono font-[1000] text-[400px] leading-[250px] -tracking-[0.2em] text-slate-500 opacity-50 text-wrap break-all max-w-full max-h-full pt-36 absolute top-1/2 left-1/2 z-40"
+                                    onClick={openHandler}
+                                >
                                     {`${artifact.desc}`.replace(/\s+/g, '')}
                                 </div>
                                 <img 
-                                    className="max-h-full"
+                                    className="max-h-full cursor-pointer"
                                     src={artifact.src}
                                     alt={artifact.alt}
+                                    onClick={openHandler}
                                 />
                             </div>
                         ))
