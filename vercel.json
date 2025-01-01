@@ -1,0 +1,13 @@
+{
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "Referer",
+                    "value": "https://ericng.live"
+                }
+            ]
+        }
+    ]
+}
