@@ -1,7 +1,7 @@
 {
     "headers": [
         {
-            "source": "/(.*)",
+            "source": "/api/gs",
             "headers": [
                 {
                     "key": "Referer",
