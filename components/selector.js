@@ -10,7 +10,7 @@ export default function Selector({title = 'Random', options = [], changeHandler 
     const [selectedApp, setSelectedApp] = useState(options?.[0]?.val);
     const handleChange = (e) => {
         setSelectedApp(e.target.value);
-        changeHandler();
+        changeHandler(e.target.value);
     }
 
     return (
