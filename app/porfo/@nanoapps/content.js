@@ -1,55 +1,27 @@
-const massageVal = (key, val) => {
-    if (val.match(/^https?:\/\/\w+/)) {
-        return <a className="text-sky-800" target="_blank" href={val}>{key}</a>;
+import Selector from '@/components/selector';
+import GsApp from '@/app/porfo/@nanoapps/gsapp';
+
+export default function AppsContent() {
+    const opts = [
+        {
+            val: 0,
+            name: 'Simple Google Sheets Renderer App',
+        },
+    ]
+
+    const changeHandler = () => {
+        
     }
-    return `${key}: ${val}`;
-}
 
-export default async function AppsContent() {
-    let keys = [];
-    let rows = [];
-
-    try {
-        const res = await fetch(`${process.env.SERVER}/api/gs`);
-        if (!res.ok) {
-            throw new Error('Something went wrong.');
-        }
-        const data = (await res.json()).data;
-        if (data.error) {
-            throw new Error('Something went wrong with the API');
-        }
-
-        keys = data.values[0];
-        rows = data.values.filter((val, ind) => ind > 0);
-    } catch (e) {
-        console.log(e);
-        return null;
-    }
-    
     return (
         <div className="h-screen" id="nanoapps">
             <div className="h-screen pt-24">
-                <div className="h-full">
-                    <div className="h-full overflow-y-auto">
-                        <div className="m-12 grid divide-y divide-slate-300">
-                            {rows.map((row, ind) => {
-                                return (
-                                    <div key={`nanoapps-rows-${ind}`} className="bg-slate-100 shadow p-4">
-                                        <div className="text-2xl font-sans">{row[0]}</div>
-                                        {keys.map((key, ind) => {
-                                            if (ind === 0) {
-                                                return null;
-                                            }
-                                            return (
-                                                <div key={key}>{
-                                                    massageVal(key, row[ind])
-                                                }</div>
-                                            );
-                                        })}
-                                    </div>
-                                );
-                            })}
-                        </div>
+                <div className="h-full flex flex-col">
+                    <div className="mt-4 mx-12 grid grid-cols-2">
+                        <Selector title="NanoApps" options={opts} />
+                    </div>
+                    <div className="overflow-y-auto">
+                        <GsApp />
                     </div>
                 </div>
             </div>

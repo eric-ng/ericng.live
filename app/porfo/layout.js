@@ -1,5 +1,7 @@
 'use client';
 
+import {useEffect, useState} from 'react';
+import {usePathname} from 'next/navigation';
 import SubNav from "@/components/subnav";
 
 const scrollOpts = {
@@ -9,14 +11,16 @@ const scrollOpts = {
 };
 
 export default function PorfoLayout({children, creatives, photos, nanoapps}) {
+    const pathname = usePathname();
+    const [curMedia, setCurMedia] = useState(pathname.substring(pathname.lastIndexOf('/')+1));
+    const [scroll, setScroll] = useState(false);
     const navs = [
         {
             link: '/porfo/creatives',
             id: '/porfo/creatives',
             handler: () => {
-                setTimeout(() => {
-                    document.getElementById('creatives').scrollIntoView(scrollOpts);
-                }, 300);
+                setCurMedia('creatives');
+                setScroll(!scroll);
                 return false;
             },
             name: 'Creatives',
@@ -25,9 +29,8 @@ export default function PorfoLayout({children, creatives, photos, nanoapps}) {
             link: '/porfo/photos',
             id: '/porfo/photos',
             handler: () => {
-                setTimeout(() => {
-                    document.getElementById('photos').scrollIntoView(scrollOpts);
-                }, 300);
+                setCurMedia('photos');
+                setScroll(!scroll);
                 return false;
             },
             name: 'Photos',
@@ -36,14 +39,18 @@ export default function PorfoLayout({children, creatives, photos, nanoapps}) {
             id: '/porfo/nanoapps',
             link: '/porfo/nanoapps',
             handler: () => {
-                setTimeout(() => {
-                    document.getElementById('nanoapps').scrollIntoView(scrollOpts);
-                }, 300);
+                setCurMedia('nanoapps');
+                setScroll(!scroll);
                 return false;
             },
             name: 'NanoApps',
         },
     ];
+    useEffect(() => {
+        setTimeout(() => {
+            document.getElementById(curMedia).scrollIntoView(scrollOpts);
+        }, 300);
+    }, [scroll]);
 
     return (
         <div className="grid h-screen">
