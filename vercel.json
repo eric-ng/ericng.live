@@ -4,7 +4,7 @@
             "source": "/api/gs",
             "headers": [
                 {
-                    "key": "Referer",
+                    "key": "Referrer",
                     "value": "https://ericng.live"
                 }
             ]
