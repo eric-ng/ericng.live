@@ -9,6 +9,7 @@ const getData = unstable_cache(
         const res = await fetch(url, {
             headers: {
                 'Content-Type': 'application/json',
+                'Referer': 'https://ericng.live',
             },
         });
         return await res.json();
