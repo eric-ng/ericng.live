@@ -22,7 +22,6 @@ const getData = unstable_cache(
 );
 
 export async function GET() {
-    console.log("############### GET FROM ROUTE ################")
     const data = await getData();
 
     return Response.json({ data });
