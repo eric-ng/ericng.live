@@ -6,12 +6,25 @@ const massageVal = (key, val) => {
 }
 
 export default async function AppsContent() {
-    const res = await fetch(`${process.env.SERVER}/api/gs`);
-    const data = (await res.json()).data;
-    console.log(process.env.SERVER, res, data);
+    let keys = [];
+    let rows = [];
 
-    const keys = data.values[0];
-    const rows = data.values.filter((val, ind) => ind > 0);
+    try {
+        const res = await fetch(`${process.env.SERVER}/api/gs`);
+        if (!res.ok) {
+            throw new Error('Something went wrong.');
+        }
+        const data = (await res.json()).data;
+        if (data.error) {
+            throw new Error('Something went wrong with the API');
+        }
+
+        keys = data.values[0];
+        rows = data.values.filter((val, ind) => ind > 0);
+    } catch (e) {
+        console.log(e);
+        return null;
+    }
     
     return (
         <div className="h-screen" id="nanoapps">

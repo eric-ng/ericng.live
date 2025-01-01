@@ -1,7 +1,5 @@
 import { unstable_cache } from 'next/cache'
 
-export const dynamic = 'force-static';
-
 const sid = process.env.NA_SID;
 const apiKey = process.env.GAPI_KEY;
 const url = `https://sheets.googleapis.com/v4/spreadsheets/${sid}/values/Sheet1?key=${apiKey}`;
