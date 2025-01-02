@@ -1,4 +1,4 @@
-import { unstable_cache } from 'next/cache'
+import { unstable_cache } from 'next/cache';
 
 const sid = process.env.NA_SID;
 const apiKey = process.env.GAPI_KEY;

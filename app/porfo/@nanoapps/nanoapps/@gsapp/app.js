@@ -36,9 +36,9 @@ export default function App({term = ''}) {
     useEffect(() => {
         (async () => {
             const tmpdata = await getData();
-            if(tmpdata.values) {
-                setKeys(tmpdata.values[0]);
-                setRows(tmpdata.values.filter((val, ind) => {
+            if(tmpdata.values && tmpdata.values.length) {
+                setKeys(tmpdata.values?.[0]);
+                setRows(tmpdata.values?.filter((val, ind) => {
                     return ind > 0
                         && (term != '' ? val.indexOf(term) > -1 : true);
                 }));

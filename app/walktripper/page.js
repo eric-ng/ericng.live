@@ -10,7 +10,7 @@ import LoopOutlinedIcon from '@mui/icons-material/LoopOutlined';
 
 const getResp = async (prompt) => {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/api/simplegen`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/api/gen`, {
             method: 'POST',
             body: JSON.stringify(
                 {
@@ -51,13 +51,8 @@ export default function AiTool() {
         if (!loading && prompt != '') {
             setLoading(true);
             const tmpPrompt = prompt;
+            const tmpOutputs = [...outputs];
             setPrompt('');
-            setOutputs([
-                {
-                    role: 'user',
-                    data: tmpPrompt,
-                },
-            ]);
             const data = await getResp(prompt);
             let outputData = '';
             const intRef = setInterval(() => {
@@ -66,6 +61,7 @@ export default function AiTool() {
                     setLoading(false);
                 } else {
                     setOutputs([
+                        ...tmpOutputs,
                         {
                             role: 'user',
                             data: tmpPrompt,

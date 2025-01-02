@@ -8,13 +8,13 @@ export default function AppsContent({gsapp, aitool}) {
     const opts = [
         {
             val: 0,
-            name: 'Simple Google Sheets Renderer App',
-            app: gsapp,
+            name: 'Simple New Prompt App',
+            app: aitool,
         },
         {
             val: 1,
-            name: 'Simple New App App',
-            app: aitool,
+            name: 'Simple Google Sheets Renderer App',
+            app: gsapp,
         },
     ]
 

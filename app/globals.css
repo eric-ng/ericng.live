@@ -47,6 +47,15 @@ body {
   }
 }
 
+.prompt-loader {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .porfo-thumbs .desc {
   transform: translate(-50%, -50%);
 }
@@ -66,4 +75,10 @@ body {
 .slideviewer-modal.full {
   width: 100%;
   opacity: 0.1;
+}
+
+.prompt-chat ul {
+  list-style: disc;
+  margin: revert;
+  padding: revert;
 }

@@ -17,6 +17,7 @@ export default function GsApp() {
             <div className="my-2">
                 <TextField 
                     value={term}
+                    placeholder={'Search'}
                     slotProps={{
                         input: {
                             startAdornment: (
