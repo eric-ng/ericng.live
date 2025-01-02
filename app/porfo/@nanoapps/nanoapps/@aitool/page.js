@@ -2,7 +2,7 @@
 
 import { remark } from 'remark';
 import html from 'remark-html';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
@@ -39,6 +39,11 @@ export default function AiTool() {
     const [prompt, setPrompt] = useState('');
     const [outputs, setOutputs] = useState([]);
     const [loading, setLoading] = useState(false);
+    useEffect(() => {
+        if (!loading) {
+            document.getElementById('prompt-input').focus();
+        }
+    }, [loading]);
     const changeHandler = (e) => {
         setPrompt(e.target.value);
     };
@@ -89,7 +94,7 @@ export default function AiTool() {
                         if (line.role === 'user') {
                             return (
                                 <div 
-                                    className="bg-green-200 py-2 px-4 w-3/4 justify-self-end content-center text-end rounded-lg"
+                                    className="bg-green-200 py-2 px-4 w-fit justify-self-end content-center text-end rounded-lg"
                                     key={`prompt-chat-${line.role}-${ind}`}
                                 >
                                     {line.data}
@@ -108,6 +113,8 @@ export default function AiTool() {
                 </div>
                 <div className="w-full mb-4">
                     <OutlinedInput
+                        id={`prompt-input`}
+                        autoFocus
                         className="w-full"
                         placeholder={'Start typing...'}
                         value={prompt}
