@@ -3,12 +3,7 @@
 import {useEffect, useState} from 'react';
 import {usePathname} from 'next/navigation';
 import SubNav from "@/components/subnav";
-
-const scrollOpts = {
-    behavior: "smooth",
-    block: "start",
-    inline: "nearest",
-};
+import { scrollOpts } from '@/app/utils/configs';
 
 export default function PorfoLayout({children, creatives, photos, nanoapps}) {
     const pathname = usePathname();
@@ -40,7 +35,7 @@ export default function PorfoLayout({children, creatives, photos, nanoapps}) {
             link: '/porfo/nanoapps',
             handler: () => {
                 setCurMedia('nanoapps');
-                setScroll(!scroll);
+                // setScroll(!scroll);
                 return false;
             },
             name: 'NanoApps',

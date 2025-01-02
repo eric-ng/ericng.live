@@ -1,10 +1,14 @@
 'use client';
 
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Selector from '@/components/selector';
+import { scrollOpts } from '@/app/utils/configs';
 
 export default function AppsContent({gsapp, aitool}) {
     const [curApp, setCurApp] = useState(0);
+    useEffect(() => {
+        document.getElementById('nanoapps').scrollIntoView(scrollOpts);
+    }, []);
     const opts = [
         {
             val: 0,

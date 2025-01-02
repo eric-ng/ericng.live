@@ -3,8 +3,16 @@
 import { usePathname } from "next/navigation";
 import Link from 'next/link';
 
+const shouldShow = (pathname) => {
+    return pathname.indexOf('/porfo') === 0
+        || pathname.indexOf('/about') === 0;
+}
+
 export default function Nav({navs = []}) {
     const pathname = usePathname();
+    if (!shouldShow(pathname)) {
+        return null;
+    }
     return (
         <nav className="shadow absolute top-0 left-0 right-0 z-40 bg-white">
             <div className="flex items-center bg-white divide-x divide-blue-200">
