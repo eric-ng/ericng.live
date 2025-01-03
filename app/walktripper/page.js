@@ -1,12 +1,11 @@
 'use client';
 
-import { remark } from 'remark';
-import html from 'remark-html';
 import { useEffect, useState } from 'react';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
-import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import LoopOutlinedIcon from '@mui/icons-material/LoopOutlined';
+import OutputMsgBox from '@/app/walktripper/outputMsgBox';
 
 const getResp = async (prompt) => {
     try {
@@ -21,14 +20,11 @@ const getResp = async (prompt) => {
         if (!res.ok) {
             throw new Error('Something went wrong.');
         }
-        // console.log(JSON.parse(await res.text()));
         const data = (await res.json()).data;
         if (data.error) {
             throw new Error(`Something went wrong with the API.  ${JSON.stringify(data)}`);
         }
-
-        const processedData = await remark().use(html).process(data);
-        return processedData.value;
+        return data;
     } catch (e) {
         console.log(e);
         return [];
@@ -39,6 +35,12 @@ export default function AiTool() {
     const [prompt, setPrompt] = useState('');
     const [outputs, setOutputs] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [geocenter, setGeocenter] = useState('0,0');
+    const [zoom, setZoom] = useState(2);
+    const [origin, setOrigin] = useState('%');
+    const [destination, setDestination] = useState('%');
+    const [waypoints, setWaypoints] = useState([]);
+    const [regionCode, setRegionCode] = useState('');
     useEffect(() => {
         if (!loading) {
             document.getElementById('prompt-input').focus();
@@ -54,80 +56,116 @@ export default function AiTool() {
     }
     const sendResp = async () => {
         if (!loading && prompt != '') {
+            setOutputs([]);
+            setRegionCode('');
+            setOrigin(`%`);
+            setDestination(`%`);
             setLoading(true);
+            setZoom(2);
             const tmpPrompt = prompt;
-            const tmpOutputs = [...outputs];
+            let tmpOutputs = [
+                {
+                    role: 'user',
+                    data: tmpPrompt,
+                },
+            ];
             setPrompt('');
             const data = await getResp(prompt);
-            let outputData = '';
-            const intRef = setInterval(() => {
-                if (outputData === data) {
-                    clearInterval(intRef);
-                    setLoading(false);
-                } else {
-                    setOutputs([
-                        ...tmpOutputs,
-                        {
-                            role: 'user',
-                            data: tmpPrompt,
+            const processedData = JSON.parse(data);
+            setOrigin(`${processedData[0].address}`);
+            setDestination(`${processedData[processedData.length - 1].address}`);
+            setGeocenter(`${processedData[processedData.length - 1].latitude},${processedData[processedData.length - 1].longitude}`);
+            setOutputs([
+                ...tmpOutputs,
+                ...processedData.map((item) => (
+                    {
+                        role: 'model',
+                        data: {
+                            name: item.locationName,
+                            address: item.address,
+                            desc: item.description,
+                            rating: item.rating,
                         },
-                        {
-                            role: 'model',
-                            data: outputData,
-                        },
-                    ]);
-                    document.getElementById('scrollRef').scrollIntoView(false);
-                    outputData = data.substring(0, outputData.length + 1);
-                }
-            }, 1);
+                    }
+                )),
+            ]);
+            setLoading(false);
+            setWaypoints(processedData.map((item) => (`${item.locationName}+${item.address}`)));
+            setRegionCode(processedData[0].regionCode);
+            setZoom(14);
         }
     }
+
     return (
-        <div className="mx-12 flex h-full">
-            <div className="grid h-full w-full">
-                <div className="prompt-chat my-4 grid gap-4 overflow-y-auto">
-                    {outputs.map((line, ind) => {
-                        if (line.role === 'user') {
-                            return (
-                                <div 
-                                    className="bg-green-200 py-2 px-4 w-fit justify-self-end content-center text-end rounded-lg"
-                                    key={`prompt-chat-${line.role}-${ind}`}
-                                >
-                                    {line.data}
-                                </div>
-                            );
-                        } else {
-                            return (
-                                <div 
-                                    key={`prompt-chat-${line.role}-${ind}`} 
-                                    dangerouslySetInnerHTML={{ __html: line.data }} 
-                                />
-                            );
-                        }
-                    })}
-                    <div id="scrollRef"></div>
+        <div className="w-screen h-screen flex flex-col">
+            <div className="grow basis-[5%] px-4 pt-2">
+                WalkTripper <small className="align-super">beta</small>
+            </div>
+            <div className="h-[90%]">
+                <div className="px-4 flex gap-2 h-full">
+                    <div className="grid w-1/3">
+                        <div className="w-full mt-4">
+                            <OutlinedInput
+                                id={`prompt-input`}
+                                autoFocus
+                                className="w-full"
+                                placeholder={'A tourist attraction.  Ex. Eiffel tower'}
+                                value={prompt}
+                                onChange={changeHandler}
+                                onKeyDown={keyHandler}
+                                disabled={loading}
+                                endAdornment={
+                                <InputAdornment position="end">
+                                    {!loading && 
+                                        <SearchOutlinedIcon className="cursor-pointer" onClick={sendResp} />
+                                    }
+                                    {loading &&
+                                        <LoopOutlinedIcon className="prompt-loader" />
+                                    }
+                                </InputAdornment>
+                                }
+                            />
+                        </div>
+                        <div className="prompt-chat my-4 overflow-y-auto">
+                            <div className="flex flex-col gap-4 h-full">
+                                {outputs.map((line, ind) => {
+                                    if (line.role === 'user') {
+                                        return (
+                                            <div 
+                                                className="bg-green-200 py-2 px-4 w-fit justify-self-end self-end rounded-lg"
+                                                key={`prompt-chat-${line.role}-${ind}`}
+                                            >
+                                                Here are some tourist attractions near {line.data}
+                                            </div>
+                                        );
+                                    } else {
+                                        return (
+                                            <OutputMsgBox 
+                                                key={`prompt-chat-${line.role}-${ind}`} 
+                                                data={line.data}
+                                            />
+                                        );
+                                    }
+                                })}
+                                <div className="" id="scrollRef"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="grow w-2/3 p-4" id="imap">
+                        <iframe
+                            className="h-full w-full"
+                            style={{border:0}}
+                            loading="lazy"
+                            allowFullScreen
+                            referrerPolicy="no-referrer-when-downgrade"
+                            src={`https://www.google.com/maps/embed/v1/directions?origin=${origin}&destination=${destination}${waypoints.length?`&waypoints=${waypoints.join('|')}`:''}${regionCode.length?`${regionCode}`:''}&center=${geocenter}&zoom=${zoom}&mode=walking&key=${process.env.NEXT_PUBLIC_GAPI_KEY}`}>
+                        </iframe>
+                    </div>
                 </div>
-                <div className="w-full mb-4">
-                    <OutlinedInput
-                        id={`prompt-input`}
-                        autoFocus
-                        className="w-full"
-                        placeholder={'Start typing...'}
-                        value={prompt}
-                        onChange={changeHandler}
-                        onKeyDown={keyHandler}
-                        disabled={loading}
-                        endAdornment={
-                        <InputAdornment position="end">
-                            {!loading && 
-                                <SendOutlinedIcon className="cursor-pointer" onClick={sendResp} />
-                            }
-                            {loading &&
-                                <LoopOutlinedIcon className="prompt-loader" />
-                            }
-                        </InputAdornment>
-                        }
-                    />
+            </div>
+            <div className="basis-[5%] grow w-full">
+                <div className="bg-slate-100 h-full p-4">
+                    Copyright WalkTripper &copy; 2025
                 </div>
             </div>
         </div>

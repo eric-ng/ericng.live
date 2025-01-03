@@ -14,17 +14,33 @@ const schema = {
                 description: "Name of the location",
                 nullable: false,
             },
-            geoLocation: {
+            address: {
                 type: SchemaType.STRING,
+            },
+            regionCode: {
+                type: SchemaType.STRING,
+            },
+            longitude: {
+                type: SchemaType.NUMBER,
+            },
+            latitude: {
+                type: SchemaType.NUMBER,
             },
             description: {
                 type: SchemaType.STRING,
             },
+            rating: {
+                type: SchemaType.NUMBER,
+            },
         },
         required: [
             'locationName',
-            'geoLocation',
             'description',
+            'longitude',
+            'latitude',
+            'rating',
+            'regionCode',
+            'address',
         ],
     },
 };
@@ -36,7 +52,9 @@ const generateData = //unstable_cache(
             contents: [
                 {
                     role: 'User',
-                    parts: [{text: prompt}],
+                    parts: [
+                        {text: `Please list up to 10 tourist attractions locations within 30 mins of walking distance from ${prompt}`}
+                    ],
                 },
             ],
             generationConfig: {
