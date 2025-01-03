@@ -70,7 +70,7 @@ export default function App({term = ''}) {
                                         );
                                     })}
                                 </div>
-                                <div className="place-content-center px-2 hover:bg-slate-200 cursor-pointer" onClick={() => handleDrill(rind)}>
+                                <div className="place-content-center rounded px-2 hover:bg-slate-200 cursor-pointer" onClick={() => handleDrill(rind)}>
                                     <ArrowForwardIosOutlinedIcon />
                                 </div>
                             </div>
@@ -79,11 +79,13 @@ export default function App({term = ''}) {
                 </div>
             }
             {curInd !=undefined &&
-                <div className="grid">
-                    <div className="my-2 cursor-pointer" onClick={() => handleDrill(undefined)}>
-                        <ArrowBackIosNewOutlinedIcon />
+                <div className="grid border rounded p-4">
+                    <div className="flex">
+                        <div className="my-2 cursor-pointer p-2 bg-slate-100 rounded hover:bg-slate-200" onClick={() => handleDrill(undefined)}>
+                            <ArrowBackIosNewOutlinedIcon /> Back
+                        </div>
                     </div>
-                    <div className="text-[3rem]">
+                    <div className="text-[2.5rem]">
                         {rows[curInd][0]}
                     </div>
                     <div>
