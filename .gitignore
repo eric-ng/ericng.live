@@ -10,7 +10,7 @@
 !.yarn/releases
 !.yarn/versions
 
-public/logo_nobg.dfr
+public/*.dfr
 
 # testing
 /coverage
