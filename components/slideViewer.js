@@ -59,7 +59,7 @@ export default function SlideViewer({id, artifacts = []}) {
                                 key={`${PREFIX}-${ind}`}
                             >
                                 <div
-                                    className="overflow-hidden cursor-pointer desc font-mono font-[1000] text-[400px] leading-[250px] -tracking-[0.2em] text-slate-500 opacity-50 text-wrap break-all max-w-full max-h-full pt-36 absolute top-1/2 left-1/2 z-40"
+                                    className="overflow-hidden cursor-pointer desc font-mono font-[1000] text-[400px] leading-[250px] -tracking-[0.2em] text-slate-500 opacity-50 text-wrap break-all max-w-full max-h-full pt-36 absolute top-1/2 left-1/2 z-10"
                                     onClick={openHandler}
                                 >
                                     {`${artifact.desc}`.replace(/\s+/g, '')}
