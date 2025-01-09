@@ -48,7 +48,7 @@ export default function SlideViewer({id, artifacts = []}) {
     }
     
     return (
-        <div id={id} className="w-screen h-screen relative">
+        <div id={id} className="w-screen h-screen relative slideviewer-cont">
             <div className="h-screen w-screen overflow-hidden">
                 <div className="h-screen inline-flex">
                     {

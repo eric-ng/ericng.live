@@ -60,6 +60,15 @@ body {
   transform: translate(-50%, -50%);
 }
 
+.slideviewer-cont {
+  transition: opacity 1s;
+  opacity: 1;
+}
+@starting-style {
+  .slideviewer-cont {
+    opacity: 0;
+  }
+}
 .slideviewer-modal {
   transition: 
     width 200ms,
