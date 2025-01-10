@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import LoopIcon from '@mui/icons-material/Loop';
 import { Loader } from '@googlemaps/js-api-loader';
 import OutputMsgBox from '@/app/walktripper/outputMsgBox';
 import Logo from '@/app/walktripper/logo';
@@ -9,6 +10,14 @@ const loader = new Loader({
     apiKey: process.env.NEXT_PUBLIC_GAPI_KEY,
     version: "beta",
 });
+
+const placeTypes = [
+    'aquarium',
+    'art_gallery',
+    'museum',
+    'stadium',
+    'tourist_attraction',
+]
 
 // const getResp = async (prompt, onErr) => {
 //     try {
@@ -38,6 +47,7 @@ const loader = new Loader({
 let markers = [];
 
 export default function AiTool() {
+    const [loading, setLoading] = useState(false);
     const [libs, setLibs] = useState({});
     const [outputs, setOutputs] = useState([]);
     const [map, setMap] = useState();
@@ -87,7 +97,7 @@ export default function AiTool() {
             });
             setDirRenderer(newDirRenderer);
             const placeAutocomplate = new PlaceAutocompleteElement({
-                types: ['tourist_attraction']
+                // types: placeTypes
             });
             placeAutocomplate.id = 'place-autocomplete-input';
             document.getElementById('place-autocomplete-container').appendChild(placeAutocomplate);
@@ -95,7 +105,14 @@ export default function AiTool() {
                 await place.fetchFields({
                     fields: ['displayName', 'location']
                 });
-                sendNearbyPlacesSearch(newDirRenderer, newMap, localLibs, place.displayName, place.location);
+                try {
+                    setLoading(true);
+                    await sendNearbyPlacesSearch(newDirRenderer, newMap, localLibs, place.displayName, place.location);
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    setLoading(false);
+                }
             });
         })();
     }, []);
@@ -109,7 +126,7 @@ export default function AiTool() {
                 center: new libs.LatLng(lat(), lng()),
                 radius: 500,
             },
-            includedPrimaryTypes: ['tourist_attraction'],
+            includedPrimaryTypes: placeTypes,
             maxResultCount: 10,
         });
         const processedData = places.sort((a, b) => a.location.lat() - b.location.lat() + a.location.lng() - b.location.lng());
@@ -194,7 +211,18 @@ export default function AiTool() {
             </div>
             <div className="h-[90%]">
                 <div className="px-4 flex gap-2 h-full flex-col-reverse lg:flex-row">
-                    <div className="grid w-full h-1/2 lg:w-1/3 lg:h-auto">
+                    <div className="grid w-full h-1/2 lg:w-1/3 lg:h-auto relative">
+                        {loading &&
+                        <div className="absolute w-full h-full opacity-75 bg-sky-100 z-10 text-center content-center">
+                            <LoopIcon className="prompt-loader w-1/2 h-1/2 text-sky-600" />
+                        </div>
+                        }
+                        {outputs.length === 0 &&
+                        <div className="absolute w-full h-full opacity-75 z-0 text-center content-center">
+                            <div>Look for attractions within walking distance</div>
+                            <div>Start typing...</div>
+                        </div>
+                        }
                         <div className="w-full mt-4" id="place-autocomplete-container"></div>
                         <div className="prompt-chat my-4 overflow-y-auto">
                             <div className="flex flex-col gap-4 h-full">

@@ -1,6 +1,6 @@
 'use client';
 
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {createRoot} from 'react-dom/client';
 import Rating from '@mui/material/Rating';
 import Logo from '@/app/walktripper/logo';
@@ -10,8 +10,9 @@ export default function OutputMsgBox({addMarker, libs, selectionChange = () => {
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [desc, setDesc] = useState('');
+    const [rating] = useState(data.rating);
     const [showRating, setShowRating] = useState(false);
-    const [marker, setMarker] = useState();
+    const marker = useRef();
 
     const targetOutput = `${data.name}${data.address}${data.desc}`;
 
@@ -30,29 +31,29 @@ export default function OutputMsgBox({addMarker, libs, selectionChange = () => {
     };
 
     const markerClickHandler = (scroll = false) => {
-        if (marker.content.classList.contains('open')) {
+        if (marker.current.content.classList.contains('open')) {
             selectionChange();
-            marker.content.classList.remove('open');
-            marker.zIndex = null;
+            marker.current.content.classList.remove('open');
+            marker.current.zIndex = null;
         } else {
             selectionChange(data);
             if (!!scroll) {
                 document.getElementById(`marker-id-${data.id}`).scrollIntoView();
             }
-            marker.content.classList.add('open');
-            marker.zIndex = 1;
+            marker.current.content.classList.add('open');
+            marker.current.zIndex = 1;
         }
     };
 
-    if (marker) {
-        marker.addListener('click', () => {
+    if (marker.current) {
+        marker.current.addEventListener('gmp-click', () => {
             markerClickHandler(true);
         });
     }
     useEffect(() => {
         return () => {
-            if (marker) {
-                marker.map = null;
+            if (marker.current) {
+                marker.current.map = null;
             }
         }
     }, []);
@@ -71,28 +72,28 @@ export default function OutputMsgBox({addMarker, libs, selectionChange = () => {
                 setOutput(targetOutput.substring(0, output.length + 1));
             }
         }, 1);
-    }, [output]);
+    }, [output, data]);
     useEffect(() => {
-        if (!marker) {
+        if (!marker.current) {
             const tmpmarker = new libs.AdvancedMarkerElement({
                 position: new libs.LatLng(data.latlng.lat, data.latlng.lng),
                 title: data.name,
                 map,
             });
-            setMarker(tmpmarker);
+            marker.current = tmpmarker;
             addMarker({
                 ref: tmpmarker,
             });
+        } else {
+            marker.current.map = map;
+            marker.current.position = new libs.LatLng(data.latlng.lat, data.latlng.lng);
         }
     }, [data]);
     useEffect(() => {
-
-    }, [marker]);
-    useEffect(() => {
-        if (marker) {
-            marker.content = buildContent(data);
+        if (marker.current) {
+            marker.current.content = buildContent(data);
         }
-    }, [marker, data]);
+    }, [marker.current, data]);
 
     return (
         <div 
@@ -103,7 +104,7 @@ export default function OutputMsgBox({addMarker, libs, selectionChange = () => {
             <div className="text-sm italic text-slate-400">{address}</div>
             <div className="">{desc}</div>
             {showRating && <div className="">
-                <Rating defaultValue={data.rating} size="small" precision={0.5} readOnly />
+                <Rating defaultValue={rating} size="small" precision={0.5} readOnly />
             </div>}
         </div>
     );
