@@ -6,7 +6,19 @@ const nextConfig = {
         ignoreDuringBuilds: true,
     },
     reactStrictMode: false,
-    
+    async headers() {
+        return [
+            {
+                source: '/(.*)',
+                headers: [
+                    {
+                        key: 'X-Frame-Options',
+                        value: 'SAMEORIGIN',
+                    }
+                ]
+            }
+        ]
+    },
 };
 
 export default nextConfig;
