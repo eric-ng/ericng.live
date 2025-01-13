@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import Nav from '@/components/nav';
+import GoogleAdsense from "@/components/googleadsense";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -45,6 +46,7 @@ export default function RootLayout({ children }) {
           </main>
         </div>
       </body>
+      <GoogleAdsense pId={`0007369260491705`} />
     </html>
   );
 }
