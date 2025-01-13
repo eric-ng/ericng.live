@@ -100,7 +100,7 @@ body {
   justify-content: center;
   padding: 4px;
   position: relative;
-  background-color: rgb(250, 173, 178);
+  background-color: rgb(47, 0, 255);
   transition: all 0.1s ease-out;
   width: 30px;
   border-radius: 10px;
@@ -127,6 +127,13 @@ body {
 
 .marker-info.open {
   background: red;
+  width: 35px;
+  height: 35px;
+  border-color: #010101;
+}
+.marker-info.open .icon{
+  width: 40px;
+  height: 40px;
 }
 
 gmp-place-autocomplete {

@@ -11,6 +11,7 @@
 !.yarn/versions
 
 public/*.dfr
+public/mp3s
 
 # testing
 /coverage
@@ -41,3 +42,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+walktripper-16916-firebase-adminsdk-44e6f-7fedf184c3.json

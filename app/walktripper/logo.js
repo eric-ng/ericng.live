@@ -7,7 +7,7 @@ export default function Logo() {
         <div className="relative aspect-square">
             {/* <RoundaboutLeftIcon className="absolute top-0 left-0 translate-x-[-0.5rem] rotate-45 w-full h-full text-blue-600" />
             <RoundaboutRightIcon className="absolute top-0 left-0 translate-x-[0.5rem] rotate-[-45deg] w-full h-full text-emerald-400" /> */}
-            <img src="logo_nobg.png" className="w-full h-full" />
+            <img src="/logo_nobg.png" className="w-full h-full" />
         </div>
     );
 };
