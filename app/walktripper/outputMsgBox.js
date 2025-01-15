@@ -165,11 +165,11 @@ export default function OutputMsgBox({libs, selectionChange = () => {}, map, dat
 
     return (
         <div 
-            className={`flex gap-2 p-2 rounded border border-sky-100 ${data.selected ? 'bg-amber-100 border-sky-400' : ''}`} id={`marker-id-${data.id}`}
+            className={`flex gap-2 p-2 shadow rounded border border-sky-100 ${data.selected ? 'bg-amber-100 border-sky-400' : ''}`} id={`marker-id-${data.id}`}
         >
             <div className="w-1/4">
                 {data.photo &&
-                <img className="aspect-square w-full h-full" src={data.photo.getURI()} />
+                <img className="aspect-square rounded w-full h-full" src={data.photo.getURI()} />
                 }
                 {!data.photo &&
                 <div className="aspect-square w-full h-full rounded-2xl bg-sky-200 text-slate-400 font-bold text-5xl text-center place-content-center">{name.substring(0, 1).toUpperCase()}</div>
@@ -177,11 +177,19 @@ export default function OutputMsgBox({libs, selectionChange = () => {}, map, dat
             </div>
             <div className="w-3/4">
                 <div className="flex gap-1">
-                    <Avatar sx={{bgcolor: data.selected ? '#995566' : ''}} className="cursor-pointer" onClick={() => markerClickHandler(false)}>
+                    <Avatar 
+                        sx={{bgcolor: data.selected ? '#995566' : ''}} 
+                        className="cursor-pointer" 
+                        onClick={() => markerClickHandler(false)}
+                    >
                         <GpsFixedIcon />
                     </Avatar>
                     <div className="relative">
-                    <Avatar className={`${loadingMp3 ? '': 'cursor-pointer'}`} onClick={() => playHandler({name, area: data.addressComps.filter((add) => add.types.indexOf('locality') > -1)[0].longText})}>
+                    <Avatar 
+                        sx={{bgcolor: '#75AF75'}}
+                        className={`${loadingMp3 ? '': 'cursor-pointer'}`} 
+                        onClick={() => playHandler({name, area: data.addressComps.filter((add) => add.types.indexOf('locality') > -1)[0].longText})}
+                    >
                         {!loadingMp3 && !isPlaying &&
                         <PlayCircleIcon />
                         }
