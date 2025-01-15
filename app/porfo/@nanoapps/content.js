@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react';
 import Selector from '@/components/selector';
 import { scrollOpts } from '@/app/utils/configs';
 
-export default function AppsContent({gsapp, aitool}) {
+export default function AppsContent({gsapp, aitool, walktripper}) {
     const [curApp, setCurApp] = useState(0);
     useEffect(() => {
         document.getElementById('nanoapps').scrollIntoView(scrollOpts);
@@ -19,6 +19,11 @@ export default function AppsContent({gsapp, aitool}) {
             val: 1,
             name: 'Simple Google Sheets Renderer App',
             app: gsapp,
+        },
+        {
+            val: 2,
+            name: 'WalkTripper - generate walking tours',
+            app: walktripper,
         },
     ]
 

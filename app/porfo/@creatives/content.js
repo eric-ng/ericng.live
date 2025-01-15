@@ -1,34 +1,14 @@
 import SlideViewer from "@/components/slideViewer";
+import { list } from '@vercel/blob';
 
-const creativesArts = [
-    {
-        src: '/30anni-poster-color.png',
-        alt: '30anni',
-        desc: 'Anniversary Poster',
-    },
-    {
-        src: '/ChristmasEveCelebPoster5a.png',
-        alt: 'ChristmasEve',
-        desc: 'Christmas Eve Poster',
-    },
-    {
-        src: '/Dec24Poster.png',
-        alt: 'Dec24-2024',
-        desc: '2024 Christmas Poster',
-    },
-    {
-        src: '/promoPosterAug20-23.png',
-        alt: 'promo',
-        desc: 'Promotion Poster',
-    },
-    {
-        src: '/rhandbook2024.png',
-        alt: 'rhandbook2024',
-        desc: 'Handbook Cover',
-    },
-];
-
-export default function CreativesContent() {
+export default async function CreativesContent() {
+    const resp = await list();
+    const blobs = resp.blobs.filter((blob) => blob.pathname.indexOf('creatives/') === 0 && blob.pathname !== 'creatives/');
+    const creativesArts = blobs.map((blob) => ({
+        src: `${blob.url}`,
+        alt: `${blob.url}`,
+        desc: `${blob.pathname.substring(blob.pathname.indexOf('/') + 1)}`,
+    }));
     return (
         <SlideViewer id="creatives" artifacts={creativesArts} />
     );

@@ -1,16 +1,14 @@
 import SlideViewer from "@/components/slideViewer";
+import { list } from '@vercel/blob';
 
-const photosArts = [];
-for(let i = 0; i < 17; i++) {
-    photosArts.push({
-        src: `/p${i+1}.jpg`,
-        alt: `photo${i+1}`,
-        desc: `Photo ${i+1}`,
-    });
-}
-
-
-export default function PhotosContent() {
+export default async function PhotosContent() {
+    const resp = await list();
+    const blobs = resp.blobs.filter((blob) => blob.pathname.indexOf('photoes/') === 0 && blob.pathname !== 'photoes/');
+    const photosArts = blobs.map((blob) => ({
+        src: `${blob.url}`,
+        alt: `${blob.url}`,
+        desc: `${blob.pathname.substring(blob.pathname.indexOf('/') + 1)}`,
+    }));
     return (
         <SlideViewer id="photos" artifacts={photosArts} />
     );
