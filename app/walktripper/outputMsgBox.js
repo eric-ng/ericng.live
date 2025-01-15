@@ -17,8 +17,9 @@ const sendConvert = async (prompt) => {
             method: 'POST',
             body: JSON.stringify({prompt}),
         });
-        const {data} = await rest.json();
-        return (data);
+        const rawData = await rest.blob();
+        var url = URL.createObjectURL(rawData);
+        return (url);
     } catch (e) {
         console.log(e);
     }

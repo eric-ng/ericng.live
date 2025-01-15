@@ -1,6 +1,7 @@
-const fs = require('fs');
-const path = require('path');
+export const dynamic = 'force-dynamic'; // always run dynamically
+
 const gTTS = require('gtts');
+
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import {getTokens} from 'next-firebase-auth-edge/lib/next/tokens';
 import {serverConfig} from '@/auth/config';
@@ -54,17 +55,14 @@ const generateData = //unstable_cache(
     // }
 // );
 
-export async function POST(req) {
+export async function POST(req, res) {
     const tokens = await getTokens(req.cookies, serverConfig);
 
     if (!tokens) {
         throw new Error('Unauthicated user');
     }
     const {prompt} = await req.json();
-    const outFileName = `mp3s/${JSON.stringify(prompt).split('').map((e) => e.charCodeAt(0)).join('')}.mp3`;
-    if (fs.existsSync(`${process.cwd()}/public/${outFileName}`)) {
-        return Response.json({ data: outFileName });
-    }
+
     const data = await generateData(prompt);
     let resp = data;
     // const data = `**Gastown:** Vancouver's oldest neighbourhood, with Victorian architecture, cobblestone streets, and unique shops and restaurants.\n" +
@@ -78,15 +76,19 @@ export async function POST(req) {
     }
 
     const gtts = new gTTS(resp, 'en');
-    await new Promise((res, rej) => {
-        gtts.save(`${process.cwd()}/public/${outFileName}`, function (err, result){
-            if(err) {
-                throw new Error(err);
-            }
-            res();
-        });
+
+    const chunks = [];
+    const stream = gtts.stream();
+    const streamData = await new Promise((res, rej) => {
+        stream.on('data', (chunk => chunks.push(Buffer.from(chunk))));
+        stream.on('error', (err) => rej(err));
+        stream.on('end', () => res(Buffer.concat(chunks)));
     });
 
-    return Response.json({ data: outFileName });
+    const headers = {};
+
+    return new Response(streamData, {status: 200, headers});
+
+    // return Response.json({ data: outFileName });
 }
 
