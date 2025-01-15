@@ -38,22 +38,26 @@ export default function Login() {
 
     return (
         <div className="h-full w-1/2 flex flex-col gap-4 place-content-center justify-self-center">
-            <div className="text-center">
-                Login
-            </div>
-            <div className="text-center text-red-600">
-                {error}
-            </div>
-            <TextField required type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-            <TextField required type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <div className="text-center">
-                <Button variant="contained" className="bg-sky-600" onClick={handleSubmit}>Login</Button>
-                <Button variant="text" className="text-sky-600" onClick={() => router.push('/')}>Cancel</Button>
-            </div>
-            <div className="text-center mt-8">
-                Don't have an account?
-                <div className="text-sky-600 hover:underline">
-                    <a href="/walktripper/register">Signup here</a>
+            <div className="rounded-xl border p-8">
+                <div className="text-center">
+                    Login
+                </div>
+                <div className="text-center text-red-600 p-2">
+                    {error}
+                </div>
+                <div className="w-full">
+                    <TextField className="w-full py-2" required type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    <TextField className="w-full py-2" required type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <div className="text-center py-2">
+                        <Button variant="contained" className="bg-sky-600" onClick={handleSubmit}>Login</Button>
+                        <Button variant="text" className="text-sky-600" onClick={() => router.push('/')}>Cancel</Button>
+                    </div>
+                </div>
+                <div className="text-center mt-8">
+                    Don't have an account?
+                    <div className="text-sky-600 hover:underline">
+                        <a href="/walktripper/register">Signup here</a>
+                    </div>
                 </div>
             </div>
         </div>
