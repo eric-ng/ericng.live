@@ -43,7 +43,7 @@ export async function middleware(request) {
 export const config = {
     matcher: [
         "/((?!_next|api|porfo|about|walktripper|.*\\.|$).*)",
-        "/walktripper",
+        // "/walktripper",
         "/api/login",
         "/api/logout",
     ],
