@@ -148,7 +148,6 @@ export default function OutputMsgBox({libs, selectionChange = () => {}, map, dat
         }
     }
     const handlePlayPause = () => {
-        console.log('playpause')
         if (audioRef.current) {
             if (isPlaying) {
                 audioRef.current.pause();

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const gTTS = require('gtts');
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import {getTokens} from 'next-firebase-auth-edge/lib/next/tokens';
@@ -61,7 +62,7 @@ export async function POST(req) {
     }
     const {prompt} = await req.json();
     const outFileName = `mp3s/${JSON.stringify(prompt).split('').map((e) => e.charCodeAt(0)).join('')}.mp3`;
-    if (fs.existsSync(`public/${outFileName}`)) {
+    if (fs.existsSync(`${process.cwd()}/public/${outFileName}`)) {
         return Response.json({ data: outFileName });
     }
     const data = await generateData(prompt);
@@ -78,7 +79,7 @@ export async function POST(req) {
 
     const gtts = new gTTS(resp, 'en');
     await new Promise((res, rej) => {
-        gtts.save(`public/${outFileName}`, function (err, result){
+        gtts.save(`${process.cwd()}/public/${outFileName}`, function (err, result){
             if(err) {
                 throw new Error(err);
             }
