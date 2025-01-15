@@ -11,7 +11,7 @@
 !.yarn/versions
 
 public/*.dfr
-public/mp3s
+public/mp3s/*.mp3
 
 # testing
 /coverage
